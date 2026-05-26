@@ -1,37 +1,40 @@
 const { ApolloServer } = require('@apollo/server');
-const express = require('express');
-require('dotenv').config();
 const { expressMiddleware } = require('@as-integrations/express5');
+const express = require('express');
 const cors = require('cors');
-const typeDefs = require('./schema/typeDefs');
-const resolvers = require('./resolvers/index');
-const connectDB = require('./config/db');
+require('dotenv').config();
+
+const typeDefs    = require('./schema/typeDefs');
+const resolvers   = require('./resolvers/index');
+const connectDB   = require('./config/db');
 
 async function startServer() {
-    const app = express();
-    const PORT = process.env.PORT || 4000;
+  const app  = express();
+  const PORT = process.env.PORT || 4000;
 
-    //Connect to MongoDB
-    await connectDB();
+  await connectDB();
 
-    const server = new ApolloServer({
-        typeDefs,
-        resolvers,
-    });
+  const server = new ApolloServer({ typeDefs, resolvers });
+  await server.start();
 
-    await server.start();
-    
-    app.use(
-        '/graphql', 
-        cors(),
-        express.json(),
-        expressMiddleware(server),
-    );
+  app.use(
+    '/graphql',
+    cors(),
+    express.json(),
+    expressMiddleware(server, {
+      context: async ({ req }) => {
+        const authHeader = req.headers.authorization || '';
+        const token = authHeader.startsWith('Bearer ')
+          ? authHeader.slice(7)
+          : null;
+        return { token };
+      },
+    })
+  );
 
-    app.listen(PORT, () => {
-        console.log(`Server is running on port ${PORT}`);
-    });
+  app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}/graphql`);
+  });
 }
-
 
 startServer();

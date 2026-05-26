@@ -1,35 +1,21 @@
-const User = require("../models/user");
+const authResolvers       = require('./auth');
+const userResolvers       = require('./user');
+const departmentResolvers = require('./department');
+const taskResolvers       = require('./task');
+const analyticsResolvers  = require('./analytics');
 
-const resolvers = {
+module.exports = {
   Query: {
-    hello: () => "GraphQL Server Running 🚀",
-    users: async () => {
-      const users = await User.find();
-      return users;
-    },
-    user: async (_, { id }) => {
-      const user = await User.findById(id);
-      return user;
-    },
-  }, 
-  
+    ...userResolvers.Query,
+    ...departmentResolvers.Query,
+    ...taskResolvers.Query,
+    ...analyticsResolvers.Query,
+  },
   Mutation: {
-    createUser: async (_, { input }) => {
-      const existingUser = await User.findOne({
-        email: input.email,
-      });
-
-      if (existingUser) {
-        throw new Error("User already exists");
-      }
-
-      const user = await User.create(input);
-
-      return user;
-    },
-  }
-
-
+    ...authResolvers.Mutation,
+    ...userResolvers.Mutation,
+    ...departmentResolvers.Mutation,
+    ...taskResolvers.Mutation,
+  },
+  Department: departmentResolvers.Department,
 };
-
-module.exports = resolvers;
