@@ -1352,3 +1352,144 @@ export interface Analytics {
 | Admin create task | `createTask`, `users`, `departments` |
 | Admin assign task | `assignTask`, `users` |
 | Admin edit task | `updateTask` |
+
+
+
+--- 
+## MindMap
+Employee & Task Management Platform
+│
+├── 1. Base Setup
+│   ├── GraphQL Endpoint
+│   │   └── http://localhost:4000/graphql
+│   ├── HTTP POST Requests
+│   ├── Authorization Header
+│   │   └── Bearer Token
+│   └── gqlRequest Helper
+│       ├── Handles fetch
+│       ├── Adds token automatically
+│       ├── Parses JSON
+│       └── Handles GraphQL errors
+│
+├── 2. Authentication
+│   ├── Register
+│   │   ├── Public access
+│   │   ├── Returns JWT token
+│   │   └── Stores token + user in localStorage
+│   │
+│   ├── Login
+│   │   ├── Public access
+│   │   ├── Returns JWT token
+│   │   ├── Returns department info
+│   │   └── Stores session locally
+│   │
+│   └── Logout
+│       ├── Clear token
+│       ├── Clear user
+│       └── Redirect to login
+│
+├── 3. Profile
+│   ├── Get My Profile
+│   │   ├── Auth required
+│   │   ├── User details
+│   │   └── Department details
+│   │
+│   └── Update Profile
+│       ├── Update name
+│       ├── Update phone
+│       └── Update position
+│
+├── 4. Employee Management (Admin Only)
+│   ├── Get All Employees
+│   ├── Get Single Employee
+│   ├── Create Employee
+│   │   ├── Name
+│   │   ├── Email
+│   │   ├── Password
+│   │   ├── Role
+│   │   └── Department
+│   │
+│   ├── Update Employee
+│   └── Delete Employee
+│
+├── 5. Department Management
+│   ├── Get All Departments
+│   ├── Get Single Department
+│   ├── Create Department (Admin)
+│   ├── Update Department (Admin)
+│   └── Delete Department (Admin)
+│
+├── 6. Task Management
+│   ├── Get All Tasks (Admin)
+│   │   ├── Filter by status
+│   │   └── Filter by priority
+│   │
+│   ├── Get My Tasks
+│   ├── Get Single Task
+│   ├── Create Task (Admin)
+│   │   ├── Title
+│   │   ├── Description
+│   │   ├── Assigned Employee
+│   │   ├── Department
+│   │   ├── Priority
+│   │   └── Due Date
+│   │
+│   ├── Update Task (Admin)
+│   ├── Assign Task (Admin)
+│   ├── Update Task Status
+│   │   ├── pending
+│   │   ├── in_progress
+│   │   ├── completed
+│   │   └── cancelled
+│   │
+│   └── Delete Task (Admin)
+│
+├── 7. Analytics Dashboard (Admin)
+│   ├── Total Employees
+│   ├── Active Employees
+│   ├── Total Departments
+│   ├── Total Tasks
+│   ├── Tasks by Status
+│   └── Tasks by Priority
+│
+├── 8. Error Handling
+│   ├── Authentication required
+│   ├── Invalid token
+│   ├── Access denied
+│   ├── Duplicate email
+│   ├── Department exists
+│   ├── Employee not found
+│   └── Task not found
+│
+├── 9. TypeScript Types
+│   ├── User
+│   ├── Department
+│   ├── Task
+│   ├── Analytics
+│   ├── TaskStatus
+│   └── TaskPriority
+│
+├── 10. Roles & Permissions
+│   ├── Employee
+│   │   ├── View own tasks
+│   │   ├── Update own task status
+│   │   ├── View departments
+│   │   └── Update profile
+│   │
+│   └── Admin
+│       ├── Manage employees
+│       ├── Manage departments
+│       ├── Manage all tasks
+│       ├── Assign tasks
+│       └── Access analytics
+│
+└── Frontend Screens
+    ├── Login Page → login
+    ├── Register Page → register
+    ├── Employee Dashboard → me + myTasks
+    ├── Profile Settings → updateProfile
+    ├── Admin Dashboard → analytics
+    ├── Employee List → users
+    ├── Department List → departments
+    ├── Task List → tasks
+    └── Task Detail → task + updateTaskStatus
