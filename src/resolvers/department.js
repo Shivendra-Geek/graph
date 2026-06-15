@@ -6,7 +6,7 @@ const departmentResolvers = {
   Query: {
     departments: async (_, __, context) => {
       authenticate(context);
-      return Department.find().populate('head').sort({ name: 1 });
+      return Department.find().populate('head').sort({ name: 1 }).exec();
     },
 
     department: async (_, { id }, context) => {
@@ -19,7 +19,7 @@ const departmentResolvers = {
 
   Department: {
     employeeCount: (parent) =>
-      User.countDocuments({ department: parent._id }),
+      User.countDocuments({ department: parent._id }).exec(),
   },
 
   Mutation: {
